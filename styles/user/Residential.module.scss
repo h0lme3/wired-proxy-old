@@ -1,0 +1,36 @@
+.container {
+
+    //max-width: 1440px;
+    margin: 0 auto;
+
+    display: grid; 
+    grid-template-columns: minmax(795px, 1fr) minmax(554px, 0.554fr); 
+    grid-template-rows: 1fr; 
+    gap: 0px 23px; 
+    grid-template-areas: 
+      "Main Side"; 
+
+    padding: 35px;
+}
+
+.main {
+  grid-area: Main;
+}
+
+.side {
+    grid-area: Side;
+}
+
+@media (max-width: 1439px) {
+
+  .container {
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+
+  }
+
+}
+

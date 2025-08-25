@@ -1,0 +1,20 @@
+.container {
+
+    // max-width: 1440px;
+    margin: 0 auto;
+    padding: 35px;
+}
+
+@media (max-width: 1024px) {
+
+  .container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 15px;
+  }
+
+  .Main {
+    max-width: 100%;
+  }
+}

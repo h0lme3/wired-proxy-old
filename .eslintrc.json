@@ -1,0 +1,13 @@
+{
+  "extends": "next/core-web-vitals",
+  "rules": {
+    "jsx-a11y/alt-text": "off",
+    "@next/next/no-img-element": "off",
+    "@next/next/no-page-custom-font": "off",
+    "@next/next/no-stylesheets-in-head-component": "off",
+    "@next/next/link-passhref": "off",
+    "@next/next/google-font-display": "off"
+  }
+}
+
+

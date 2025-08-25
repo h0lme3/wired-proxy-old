@@ -1,0 +1,129 @@
+.container {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    padding-bottom: 26px;
+    border-bottom: 1px solid #373B46;
+}
+
+.progressBar {
+    height: 53px;
+    width: 53px;
+}
+
+.name {
+    display: block;
+
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 21px;
+
+    color: #939AAA;
+
+
+    flex: none;
+    order: 1;
+    flex-grow: 0;
+    margin: 0px 0px;
+}
+
+.value {
+    
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 42px;
+    line-height: 51px;
+
+    color: #ffbc00;
+
+    flex: none;
+    order: 0;
+    flex-grow: 0;
+    margin: 0px 11px;
+}
+
+.limit {
+    .name {
+        width: 64px;
+        height: 42px;
+    }
+    .value {
+        min-width: 67px;
+    }
+}
+
+.usage {
+    .name {
+        width: 84px;
+        height: 42px;
+    }
+    .value {
+        min-width: 96px;
+    }
+}
+
+.time {
+    .name {
+        width: 62px;
+        height: 42px;
+    }
+    .value {
+        color: #939AAA;
+        min-width: 49px;
+
+    }
+}
+
+.limit, .usage, .time {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+@media (max-width: 768px) {
+
+    .container {
+        width: 80vw;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+
+        .limit, .usage, .time {
+            width: 100%;
+            justify-content: space-between;
+
+            .value {
+                width: 30%;
+                height: unset;
+                text-align: center;
+            }
+
+            .name {
+                width: 30%;
+                height: unset;
+            }
+        }
+
+    }
+}
+
+@media (max-width: 425px) {
+    .value {
+        font-size: 30px;
+    }
+
+    .name {
+        font-size: 14px;
+    }
+
+    .container {
+
+    }
+
+
+}
+

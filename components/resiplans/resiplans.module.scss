@@ -1,0 +1,287 @@
+.topHeader {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-top: 15px;
+
+    p {
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 600;
+        font-size: 14px;
+        line-height: 17px;
+
+        color: #FFFFFF;
+        margin: 0px;
+    }
+
+    label {
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 600;
+        font-size: 12px;
+        line-height: 15px;
+        /* identical to box height */
+
+
+        color: #939AAA;
+        position: relative;
+        top: 0px;
+        left: 44px;
+    }
+
+    select {
+        width: 182px;
+        height: 38px;
+
+        background: #1B1E25;
+        border: 1px solid #373B46;
+        box-sizing: border-box;
+        border-radius: 4px;
+
+        color: white;
+        padding: 10px;
+        padding-left: 44px;
+
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 600;
+        font-size: 12px;
+        line-height: 15px;
+    }
+}
+
+.planSelector {
+    margin-left: auto; 
+}
+
+.planCard {
+    margin-top: 10px;
+
+    display: flex;
+    flex-direction: column;
+
+    background: #252A34;
+    border-radius: 8px;
+    height: 144px;
+
+    .planHeader { 
+
+        padding: 17px 15px 15px 18px;
+
+        display: flex;
+        align-items: center;
+        flex-direction: row;
+
+        height: 45px;
+        background: #313644;
+        border-radius: 8px 8px 0px 0px;
+
+        .planTitle {
+            font-family: 'Inter';
+            font-style: normal;
+            font-weight: 600;
+            font-size: 12px;
+            line-height: 15px;
+            color: #FFFFFF;
+            margin: 0px;
+        }
+
+        .ChipGreen, .ChipRed {
+
+            text-transform: lowercase;
+            p::first-letter {
+                text-transform: uppercase;
+            }
+        
+            margin-left: auto;
+        }
+    }
+}
+
+.ChipGreen {
+
+
+
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 6px 8px;
+    
+    width: 53px;
+    height: 27px;
+
+    background: rgba(92, 255, 148, 0.12);
+    border-radius: 4px;
+
+    p {
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 600;
+        font-size: 12px;
+        line-height: 15px;
+        /* identical to box height */
+
+
+        color: #5CFF94;
+
+
+        /* Inside auto layout */
+
+        flex: none;
+        order: 0;
+        flex-grow: 0;
+        margin: 0px 10px;
+    }
+
+}
+
+.ChipRed {
+
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 6px 8px;
+    
+    width: 60px;
+    height: 27px;
+
+    background: rgba(255, 41, 118, 0.12);
+    border-radius: 4px;
+
+    p {
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 600;
+        font-size: 12px;
+        line-height: 15px;
+
+
+        color: #FF2976;
+
+
+        flex: none;
+        order: 0;
+        flex-grow: 0;
+        margin: 0px 10px;
+    }
+
+}
+
+.planInfo {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 17px 102px 15px 18px;
+    
+    p, span {
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 600;
+        font-size: 12px;
+        line-height: 15px;
+
+        color: #939AAA;
+    }
+
+    span {
+        color: white
+    }
+
+    p {
+        margin: 0px;
+    }
+
+    div {
+        display: flex;
+        align-items: center;
+    }
+
+    .planOrderId {
+        margin-left: 8px;
+    }
+
+}
+
+
+.progressBars {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 19px;
+
+    padding: 0px 15px 15px 18px;
+
+    p {
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 600;
+        font-size: 12px;
+        line-height: 15px;
+
+        color: #939AAA;
+        margin: 0;
+        margin-bottom: 5px;
+    }
+}
+
+@media (max-width: 1024px) {
+
+    .container {
+        width: 80vw;
+    }
+    .planCard {
+        height: auto
+    }
+
+    .progressBars {
+        grid-template-columns: 1fr;
+        grid-template-rows: 1fr 1fr;
+    }
+
+    .planInfo {
+        padding: 18px;
+    }
+}
+
+@media (max-width: 768px) {
+
+    .topHeader p {
+        font-size: 10px !important;
+    }
+
+    .planSelector {
+        label {
+            position: absolute;
+            left: unset;
+            top: 12px;
+            right: 140px;
+        }
+    }
+}
+
+@media (max-width: 425px) {
+    .planInfo {
+        justify-content: space-between;
+        img {
+            display: none !important;
+        }
+
+        p, span {
+            font-size: 10px !important;
+        }
+    }
+
+    .planOrderId {
+        margin-left: unset !important;
+    }
+
+    .progressBars {
+        p, span {
+            font-size: 10px !important;
+        }
+    }
+}

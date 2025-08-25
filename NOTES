@@ -1,0 +1,23 @@
+CREATE TABLE `guide` (
+  `guide_slug` VARCHAR(255) NOT NULL,
+  `guide_title` VARCHAR(255) NOT NULL,
+  `guide_icon` VARCHAR(4096) NOT NULL,
+  `guide_description` VARCHAR(255) NOT NULL,
+  `guide_filters` VARCHAR(4096) DEFAULT NULL,
+  `guide_content` MEDIUMTEXT NOT NULL,
+  `created_at` TIMESTAMP(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0),
+  PRIMARY KEY (`guide_slug`)
+);
+
+CREATE TABLE `faq` (
+  `faq_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `faq_title` VARCHAR(255) NOT NULL,
+  `faq_content` VARCHAR(255) NOT NULL,
+  `created_at` TIMESTAMP(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0),
+  PRIMARY KEY (`faq_id`)
+);
+
+
+
+
+

@@ -1,0 +1,471 @@
+.Row {
+    border-bottom: 1px solid #373B46;
+
+    &:last-child {
+        border-bottom: none;
+    }
+
+}
+
+.Data {
+    display: grid;
+    grid-template-columns: 1.1fr 1.8fr repeat(2, 0.4fr) repeat(2, 0.8fr) 0.8fr 2.6fr;
+    grid-template-rows: minmax(45px, auto);
+    grid-area: 1 / 1 / 2 / 8;
+
+
+    background: #252A34;
+
+
+    color: #fff;
+    align-items: center;
+
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 12px;
+    line-height: 15px;
+
+    gap: 15px;
+
+    p {
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 600;
+        font-size: 12px;
+        line-height: 15px;
+
+        margin-bottom: unset;
+        margin-top: unset;
+    }
+}
+
+.OrderNo {
+    grid-area: 1 / 1 / 2 / 2;
+    margin-left: 10px;
+
+
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    justify-content: flex-start;
+
+    p {
+        margin-left: 6px;
+    }
+
+}
+
+.ProductName {
+    grid-area: 1 / 2 / 2 / 3;
+}
+
+.Qty {
+    grid-area: 1 / 3 / 2 / 4;
+}
+
+.Total {
+    grid-area: 1 / 4 / 2 / 5;
+}
+
+.OrderDate {
+    grid-area: 1 / 5 / 2 / 6;
+}
+
+.ActiveTime {
+    grid-area: 1 / 6 / 2 / 7;
+}
+
+.Status {
+    grid-area: 1 / 8 / 2 / 9;
+    justify-self: end;
+    margin-right: 16px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+}
+
+.AutoRenew {
+    grid-area: 1 / 7 / 2 / 8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.Collapse {
+
+    transition: all .3s ease;
+
+    opacity: 0;
+    max-height: 0;
+    overflow: hidden;
+
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: 1fr;
+    gap: 0px 0px;
+
+
+    p {
+
+        margin: 0px;
+        margin-bottom: 5px;
+
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 600;
+        font-size: 12px;
+        line-height: 15px;
+        /* identical to box height */
+
+        color: #939AAA;
+    }
+
+}
+
+.Show {
+
+    max-height: 55px;
+    visibility: visible;
+    opacity: 1;
+    padding: 0px 13px 13px 13px;
+}
+
+
+.ChipGreen {
+
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 6px 8px;
+
+    // width: 53px;
+    height: 27px;
+
+    background: rgba(92, 255, 148, 0.12);
+    border-radius: 4px;
+
+    p {
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 600;
+        font-size: 12px;
+        line-height: 15px;
+        /* identical to box height */
+
+
+        color: #5CFF94;
+        text-align: center;
+
+    }
+
+}
+
+.ChipGreen,
+.ChipRed,
+.ChipOrange {
+
+    text-transform: lowercase;
+
+    p::first-letter {
+        text-transform: uppercase;
+    }
+}
+
+.ChipOrange {
+
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 6px 8px;
+
+    // width: 60px;
+    height: 27px;
+
+    background: rgba(#FFCC61, 0.12);
+    border-radius: 4px;
+
+    p {
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 600;
+        font-size: 12px;
+        line-height: 15px;
+
+
+        color: #FFCC61;
+        text-align: center;
+
+
+    }
+
+}
+
+
+.ChipRed {
+
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 6px 8px;
+
+    // width: 60px;
+    height: 27px;
+
+    background: rgba(255, 41, 118, 0.12);
+    border-radius: 4px;
+
+    p {
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 600;
+        font-size: 12px;
+        line-height: 15px;
+
+
+        color: #FF2976;
+
+        text-align: center;
+    }
+
+}
+
+.DownloadButton {
+
+    cursor: pointer;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+
+    width: auto;
+    height: 27px;
+
+
+    background: #313644;
+    border: 1px solid #373B46;
+    box-sizing: border-box;
+    border-radius: 4px;
+
+    &:hover {
+        background-color: darken(#313644, 2%);
+        border: 1px solid darken(#313644, 2%);
+    }
+
+    p {
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 600;
+        font-size: 12px;
+        line-height: 15px;
+        /* identical to box height */
+
+
+        color: #939AAA;
+
+
+        /* Inside auto layout */
+
+        flex: none;
+        order: 0;
+        flex-grow: 0;
+        margin: 0px 10px;
+    }
+
+}
+
+.DownloadInsomniacButton {
+
+    cursor: pointer;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+
+    width: 140px;
+    height: 27px;
+
+
+    background: #313644;
+    border: 1px solid #373B46;
+    box-sizing: border-box;
+    border-radius: 4px;
+
+    &:hover {
+        background-color: darken(#313644, 2%);
+        border: 1px solid darken(#313644, 2%);
+    }
+
+    p {
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 600;
+        font-size: 12px;
+        line-height: 15px;
+        /* identical to box height */
+
+
+        color: #939AAA;
+
+
+        /* Inside auto layout */
+
+        flex: none;
+        order: 0;
+        flex-grow: 0;
+        margin: 0px 10px;
+    }
+
+}
+
+.ViewButton {
+
+    cursor: pointer;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 6px 8px;
+
+    width: 75px;
+    height: 27px;
+
+
+    background: #313644;
+    border: 1px solid #373B46;
+    box-sizing: border-box;
+    border-radius: 4px;
+
+    &:hover {
+        background-color: darken(#313644, 2%);
+        border: 1px solid darken(#313644, 2%);
+    }
+
+    p {
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 600;
+        font-size: 12px;
+        line-height: 15px;
+        /* identical to box height */
+
+
+        color: #939AAA;
+
+
+        /* Inside auto layout */
+
+        flex: none;
+        order: 0;
+        flex-grow: 0;
+        margin: 0px 10px;
+    }
+
+}
+
+.ExtendPlanButton {
+
+    cursor: pointer;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 6px 8px;
+
+    width: 85px;
+    height: 27px;
+
+
+    background: #313644;
+    border: 1px solid #373B46;
+    box-sizing: border-box;
+    border-radius: 4px;
+
+    &:hover {
+        background-color: darken(#313644, 2%);
+        border: 1px solid darken(#313644, 2%);
+    }
+
+    p {
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 600;
+        font-size: 12px;
+        line-height: 15px;
+        /* identical to box height */
+
+
+        color: #939AAA;
+
+
+        /* Inside auto layout */
+
+        flex: none;
+        order: 0;
+        flex-grow: 0;
+        margin: 0px 10px;
+    }
+
+}
+
+
+
+
+.CustomCredsButton {
+    cursor: pointer;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 6px 8px;
+    width: 110px;
+    height: 27px;
+    background: #313644;
+    border: 1px solid #373B46;
+    box-sizing: border-box;
+    border-radius: 4px;
+
+    &:hover {
+        background-color: darken(#313644, 2%);
+        border: 1px solid darken(#313644, 2%);
+    }
+
+    p {
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 600;
+        font-size: 12px;
+        line-height: 15px;
+        /* identical to box height */
+        color: #939AAA;
+        /* Inside auto layout */
+        flex: none;
+        order: 0;
+        flex-grow: 0;
+        margin: 0px 10px;
+    }
+}
+
+
+@media (max-width: 1024px) {
+
+
+
+    .OrderNo {
+        img {
+            display: none !important
+        }
+    }
+
+
+
+}

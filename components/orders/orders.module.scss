@@ -1,0 +1,181 @@
+.Table {
+    min-height: 500px;
+    padding-bottom: 24px;
+
+    background: #252a34;
+    border-radius: 8px;
+}
+
+
+.TitleContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5px;
+    margin-top: 21px;
+
+    span {
+        font-family: "Inter";
+        font-style: normal;
+        font-weight: 600;
+        font-size: 14px;
+        line-height: 17px;
+        /* identical to box height */
+
+        color: #ffffff;
+    }
+
+    div {
+
+        display: flex;
+        align-items: center;
+        gap: 5px;
+
+        span {
+            color: #939AAA;
+            font-size: 12px;
+            line-height: unset;
+        }
+
+
+        button {
+
+            cursor: pointer;
+
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            padding: 8px 14px;
+
+            width: 50px;
+            height: 31px;
+
+            background: #1b1e25;
+            border: 1px solid #373b46;
+            box-sizing: border-box;
+            box-shadow: 0px 4px 9px rgba(0, 0, 0, 0.25);
+            border-radius: 4px;
+
+            &:hover {
+                background: lighten(#1b1e25, 2%);
+            }
+
+            p {
+                font-family: "Inter";
+                font-style: normal;
+                font-weight: 600;
+                font-size: 12px;
+                line-height: 15px;
+                /* identical to box height */
+
+                color: #ffffff;
+
+                /* Inside auto layout */
+
+                flex: none;
+                order: 0;
+                flex-grow: 0;
+                margin: 0px 10px;
+            }
+
+            &:disabled {
+                p {
+                    color: #939AAA;
+                }
+            }
+        }
+
+        .DownloadAllButton {
+            margin-right: 15px;
+            width: 150px !important;
+            background: linear-gradient(to right, #ff5600 0%, #ffbc00 100%) !important;
+
+            &:hover {
+                background: linear-gradient(to right, darken(#ff5600, 10) 0%, darken(#ffbc00, 10) 100%) !important;
+            }
+        }
+
+
+    }
+
+
+}
+
+.Header {
+    display: grid;
+    grid-template-columns: 1.1fr 1.8fr repeat(2, 0.4fr) repeat(2, 0.8fr) 0.8fr 2.6fr;
+    grid-template-rows: 45px;
+    grid-area: 1 / 1 / 2 / 8;
+
+    background: #313644;
+    border-radius: 8px 8px 0px 0px;
+
+    color: #939aaa;
+    align-items: center;
+
+    font-family: "Inter";
+    font-style: normal;
+    font-weight: 600;
+    font-size: 12px;
+    line-height: 15px;
+
+    gap: 15px;
+
+}
+
+.OrderNo {
+    grid-area: 1 / 1 / 2 / 2;
+    justify-self: center;
+}
+
+.ProductName {
+    grid-area: 1 / 2 / 2 / 3;
+}
+
+.Qty {
+    grid-area: 1 / 3 / 2 / 4;
+}
+
+.Total {
+    grid-area: 1 / 4 / 2 / 5;
+}
+
+.OrderDate {
+    grid-area: 1 / 5 / 2 / 6;
+}
+
+.ActiveTime {
+    grid-area: 1 / 6 / 2 / 7;
+}
+
+.Status {
+    grid-area: 1 / 8 / 2 / 9;
+    justify-self: end;
+    margin-right: 16px;
+}
+
+.AutoRenew {
+    grid-area: 1 / 7 / 2 / 8;
+    text-align: center;
+}
+
+
+@media (max-width: 1024px) {
+    .Container {
+        overflow-x: scroll;
+    }
+
+    .TitleContainer {
+        width: 1000px;
+    }
+
+    .Table {
+        width: 1000px;
+
+        p {
+            font-size: 0.75em !important;
+        }
+    }
+
+}

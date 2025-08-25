@@ -1,0 +1,787 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  userId   String  @id @default(uuid()) @map("user_id") @db.VarChar(255)
+  email    String  @unique @map("email") @db.VarChar(255)
+  name     String  @map("name") @db.VarChar(255)
+  password String  @map("password") @db.VarChar(255)
+  avatar   String? @map("avatar") @db.VarChar(255)
+  role     Int     @default(1) @map("role") @db.TinyInt
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("user")
+}
+
+model Partner {
+  partnerId        Int     @id @default(autoincrement()) @map("partner_id") @db.UnsignedInt
+  clickupId        String  @map("clickup_id") @db.VarChar(255)
+  name             String  @map("name") @db.VarChar(255)
+  status           String  @map("status") @db.VarChar(255)
+  rating           String  @map("rating") @db.VarChar(255)
+  type             String  @map("type") @db.VarChar(255)
+  industries       String  @map("industries") @db.VarChar(255)
+  serviceRegions   String  @map("service_regions") @db.VarChar(255)
+  location         String? @map("location") @db.VarChar(255)
+  website          String? @map("website") @db.VarChar(255)
+  social           String? @map("social") @db.VarChar(255)
+  tracked          Int     @default(0) @map("tracked") @db.TinyInt
+  webhook          String? @map("webhook") @db.VarChar(255)
+  affiliate        Int     @default(0) @map("affiliate") @db.TinyInt
+  affiliatePercent Int?    @map("affiliate_percent") @db.TinyInt
+  activeCoupon     String? @map("active_coupon") @db.VarChar(255)
+  retiredCoupon    String? @map("retired_coupon") @db.VarChar(255)
+  cookies          String  @unique @map("cookies") @db.VarChar(255)
+  changePercent    Int?    @map("change_percent") @db.TinyInt
+  salesMonth       Int?    @map("sales_month") @db.Int
+  sales12Month     Int?    @map("sales_12_month") @db.Int
+  salesLifetime    Int?    @map("sales_lifetime") @db.Int
+  salesHistory     String? @map("sales_history") @db.VarChar(255)
+  contactGroup1    String? @map("contact_group_1") @db.VarChar(255)
+  contactGroup2    String? @map("contact_group_2") @db.VarChar(255)
+  contactPerson1   String? @map("contact_person_1") @db.VarChar(255)
+  contactPerson2   String? @map("contact_person_2") @db.VarChar(255)
+
+  schedulePartners SchedulePartner[]
+
+  customers     Customer[] @relation("customerPartner")
+  lastCustomers Customer[] @relation("customerLastPartner")
+
+  @@map("partner")
+}
+
+model Template {
+  templateId String  @id @default(uuid()) @map("template_id") @db.VarChar(255)
+  name       String  @map("name") @db.VarChar(255)
+  type       String  @map("type") @db.VarChar(255)
+  discohook  String? @map("discohook") @db.LongText
+  email      String? @map("email") @db.LongText
+
+  schedule Schedule[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("template")
+}
+
+model Schedule {
+  scheduleId String    @id @default(uuid()) @map("schedule_id") @db.VarChar(255)
+  templateId String    @map("template_id") @db.VarChar(255)
+  name       String    @map("name") @db.VarChar(255)
+  type       String    @map("type") @db.VarChar(255)
+  datetime   DateTime? @map("datetime") @db.DateTime
+  sunday     Boolean   @default(false) @map("sunday")
+  monday     Boolean   @default(false) @map("monday")
+  tuesday    Boolean   @default(false) @map("tuesday")
+  wednesday  Boolean   @default(false) @map("wednesday")
+  thursday   Boolean   @default(false) @map("thursday")
+  friday     Boolean   @default(false) @map("friday")
+  saturday   Boolean   @default(false) @map("saturday")
+
+  template         Template          @relation(fields: [templateId], references: [templateId])
+  schedulePartners SchedulePartner[]
+  History          History[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("schedule")
+}
+
+model History {
+  historyId  String   @id @default(uuid()) @map("history_id") @db.VarChar(255)
+  scheduleId String   @db.VarChar(255)
+  datetime   DateTime @map("datetime") @db.DateTime
+
+  schedule Schedule @relation(fields: [scheduleId], references: [scheduleId])
+
+  @@map("history")
+}
+
+model SchedulePartner {
+  scheduleId String @db.VarChar(255)
+  partnerId  Int    @db.UnsignedInt
+
+  schedule Schedule @relation(fields: [scheduleId], references: [scheduleId])
+  partner  Partner  @relation(fields: [partnerId], references: [partnerId])
+
+  @@id([scheduleId, partnerId])
+  @@map("schedule_partner")
+}
+
+// old system prisma
+model Blog {
+  blogId                  Int        @id @default(autoincrement()) @map("blog_id")
+  blogStatus              String?    @map("blog_status") @db.VarChar(255)
+  blogType                String?    @map("blog_type") @db.VarChar(255)
+  blogSellType            String?    @map("blog_sell_type") @db.VarChar(255)
+  blogPublishTime         DateTime?  @map("blog_publish_time") @db.DateTime(0)
+  blogTitle               String?    @map("blog_title") @db.VarChar(255)
+  blogSubtitle            String?    @map("blog_subtitle") @db.VarChar(255)
+  blogVideoUrl            String?    @map("blog_video_url") @db.VarChar(255)
+  blogPicture1            String?    @map("blog_picture_1") @db.VarChar(255)
+  blogPicture1Description String?    @map("blog_picture_1_description") @db.VarChar(255)
+  blogPicture2            String?    @map("blog_picture_2") @db.VarChar(255)
+  blogPicture2Description String?    @map("blog_picture_2_description") @db.VarChar(255)
+  blogPicture3            String?    @map("blog_picture_3") @db.VarChar(255)
+  blogPicture3Description String?    @map("blog_picture_3_description") @db.VarChar(255)
+  blogPicture4            String?    @map("blog_picture_4") @db.VarChar(255)
+  blogPicture4Description String?    @map("blog_picture_4_description") @db.VarChar(255)
+  blogPicture5            String?    @map("blog_picture_5") @db.VarChar(255)
+  blogPicture5Description String?    @map("blog_picture_5_description") @db.VarChar(255)
+  blogPicture6            String?    @map("blog_picture_6") @db.VarChar(255)
+  blogPicture6Description String?    @map("blog_picture_6_description") @db.VarChar(255)
+  blogDate                String?    @map("blog_date") @db.VarChar(255)
+  blogDatetime            DateTime?  @map("blog_datetime") @db.DateTime(0)
+  blogContent             String?    @map("blog_content") @db.VarChar(2048)
+  blogRegion              String?    @map("blog_region") @db.VarChar(255)
+  blogAuthorId            Int?       @map("blog_author_id")
+  blogHit                 Int?       @map("blog_hits")
+  customer                Customer?  @relation("blogTocustomer", fields: [blogAuthorId], references: [customerId], onDelete: Restrict, onUpdate: Restrict, map: "blog_ibfk_1")
+  blogLinks               BlogLink[] @relation("blogToblog_link")
+  blogTags                BlogTag[]  @relation("blogToblog_tag")
+
+  @@index([blogAuthorId], map: "blog_author_id")
+  @@map("blog")
+}
+
+model BlogLink {
+  blogLinkId    Int     @id @default(autoincrement()) @map("blog_link_id")
+  blogLinkDate  String? @map("blog_link_date") @db.VarChar(255)
+  blogLinkTitle String? @map("blog_link_title") @db.VarChar(255)
+  blogLinkLink  String? @map("blog_link_link") @db.VarChar(255)
+  blogId        Int?    @map("blog_id")
+  blog          Blog?   @relation("blogToblog_link", fields: [blogId], references: [blogId], onDelete: Restrict, onUpdate: Restrict, map: "blog_link_ibfk_1")
+
+  @@index([blogId], map: "blog_id")
+  @@map("blog_link")
+}
+
+model BlogTag {
+  blogTagId      Int     @id @default(autoincrement()) @map("blog_tag_id")
+  blogTagContent String? @map("blog_tag_content") @db.VarChar(255)
+  blogId         Int?    @map("blog_id")
+  blog           Blog?   @relation("blogToblog_tag", fields: [blogId], references: [blogId], onDelete: Restrict, onUpdate: Restrict, map: "blog_tag_ibfk_1")
+
+  @@index([blogId], map: "blog_id")
+  @@map("blog_tag")
+}
+
+model CommercialAccount {
+  commercialAccountId Int       @id @default(autoincrement()) @map("commercial_account_id")
+  type                String?   @db.VarChar(255)
+  status              String?   @db.VarChar(255)
+  createdDatetime     DateTime? @map("created_datetime") @db.DateTime(0)
+  email               String?   @db.VarChar(255)
+  password            String?   @db.VarChar(255)
+  recovery            String?   @db.VarChar(255)
+  supplier            String?   @db.VarChar(255)
+  farmStartDate       DateTime? @map("farm_start_date") @db.DateTime(0)
+  meta1               String?   @map("meta_1") @db.VarChar(255)
+  meta2               String?   @map("meta_2") @db.VarChar(255)
+  meta3               String?   @map("meta_3") @db.VarChar(255)
+  lastChange          DateTime? @map("last_change") @db.DateTime(0)
+  assignedOrderId     String?   @map("assigned_order_id") @db.VarChar(255)
+  proxyId             Int?      @map("proxy_id")
+  order               Order?    @relation("commercial_accountToorder", fields: [assignedOrderId], references: [orderId], onDelete: Restrict, onUpdate: Restrict, map: "commercial_account_ibfk_1")
+  proxy               Proxy?    @relation("commercial_accountToproxy", fields: [proxyId], references: [proxyId], onDelete: Restrict, onUpdate: Restrict, map: "commercial_account_ibfk_2")
+
+  @@index([assignedOrderId], map: "assigned_order_id")
+  @@index([proxyId], map: "proxy_id")
+  @@map("commercial_account")
+}
+
+model Config {
+  configId             Int     @id @map("config_id")
+  specialPassword      String? @map("special_password") @db.VarChar(255)
+  ispTPassword         String? @map("isp_t_password") @db.VarChar(255)
+  ispYsPassword        String? @map("isp_ys_password") @db.Text
+  ispFsPassword        String? @map("isp_fs_password") @db.Text
+  ispVevePassword      String? @map("isp_veve_password") @db.Text
+  ispEuPassword        String? @map("isp_eu_password") @db.Text
+  publicToggle         Int?    @default(0) @map("public_toggle") @db.TinyInt
+  failureWebhook       String? @map("failure_webhook") @db.VarChar(4096)
+  successWebhook       String? @map("success_webhook") @db.VarChar(4096)
+  porterVipTrialToggle Int?    @default(0) @map("portervip_trial_toggle") @db.TinyInt
+  porterVipTrialDays   Int?    @default(30) @map("portervip_trial_days")
+  cartHoldActive       Int?    @default(0) @map("cart_hold_active") @db.TinyInt
+
+  @@map("config")
+}
+
+model Customer {
+  customerId        Int       @id @default(autoincrement()) @map("customer_id")
+  discordId         String?   @unique(map: "discord_id") @map("discord_id") @db.VarChar(255)
+  discordEmail      String?   @unique(map: "discord_email") @map("discord_email") @db.VarChar(255)
+  customerUsername  String?   @unique(map: "customer_username") @map("customer_username") @db.VarChar(255)
+  customerTwitter   String?   @unique(map: "customer_twitter") @map("customer_twitter") @db.VarChar(255)
+  customerYoutube   String?   @unique(map: "customer_youtube") @map("customer_youtube") @db.VarChar(255)
+  customerInstagram String?   @unique(map: "customer_instagram") @map("customer_instagram") @db.VarChar(255)
+  customerTiktok    String?   @unique(map: "customer_tiktok") @map("customer_tiktok") @db.VarChar(255)
+  stripeId          String?   @unique(map: "stripe_id") @map("stripe_id") @db.VarChar(255)
+  profileImage      String?   @map("profile_image") @db.VarChar(255)
+  firstName         String?   @map("first_name") @db.VarChar(255)
+  lastName          String?   @map("last_name") @db.VarChar(255)
+  email             String    @db.VarChar(255)
+  password          String?   @db.VarChar(80)
+  activationCode    String?   @map("activation_code") @db.VarChar(255)
+  regDate           DateTime? @map("reg_date") @db.DateTime(0)
+  region            String?   @db.VarChar(255)
+  admin             Boolean?
+  adminType         String?   @map("admin_type") @db.VarChar(255)
+  note              String?   @db.VarChar(512)
+  meta              String?   @db.VarChar(512)
+  discordAuth       Boolean?  @map("discord_auth")
+  b2b_username      String?   @db.VarChar(45)
+  b2b_apikey        String?   @db.VarChar(255)
+  site              String?   @default("porter") @db.VarChar(255)
+  otp               String?   @db.VarChar(255)
+  otpExpiry         String?   @map("otp_expiry") @db.VarChar(255)
+  newsletter        Int?      @default(1) @map("newsletter") @db.TinyInt
+  favourite         Int?      @default(0) @map("favourite") @db.TinyInt
+  reportMainEmail   String?   @map("report_main_email") @db.VarChar(512)
+  suspended         Int?      @default(0) @map("suspended") @db.TinyInt
+  secondEmail       String?   @map("second_email") @db.VarChar(255)
+  otpState          Int?      @default(0) @map("otp_state") @db.TinyInt
+
+  ptWebhook        String? @map("pt_webhook") @db.VarChar(128)
+  insomniacWebhook String? @map("insomniac_webhook") @db.VarChar(128)
+  automatiqWebhook Int?    @default(0) @map("automatiq_webhook") @db.TinyInt
+  phoneWebhook     String? @map("phone_webhook") @db.VarChar(1000)
+  phoneApiKey      String? @map("phone_apikey") @db.VarChar(100)
+
+  partnerId     Int? @map("partner_id") @db.UnsignedInt
+  lastPartnerId Int? @map("last_partner_id") @db.UnsignedInt
+
+  blogs                 Blog[]            @relation("blogTocustomer")
+  emailCustomerToemails Email[]           @relation("customerToemail")
+  events                Event[]           @relation("customerToevent")
+  orders                Order[]           @relation("customerToorder")
+  ppGroups              PpGroup[]         @relation("customerTopp_group")
+  ppPosts               PpPost[]          @relation("customerTopp_post")
+  residentialPlans      ResidentialPlan[] @relation("customerToresidential_plan")
+
+  partner     Partner? @relation("customerPartner", fields: [partnerId], references: [partnerId])
+  lastPartner Partner? @relation("customerLastPartner", fields: [lastPartnerId], references: [partnerId])
+
+  @@unique([email, site], map: "email")
+  @@map("customer")
+}
+
+model PotentialCustomer {
+  email           String    @id @map("email") @db.VarChar(255)
+  regDate         DateTime? @map("reg_date") @db.DateTime(0)
+  note            String?   @db.VarChar(512)
+  favourite       Int?      @default(0) @map("favourite") @db.TinyInt
+  reportMainEmail String?   @map("report_main_email") @db.VarChar(512)
+
+  @@unique([email], map: "email")
+  @@map("report_potential_customers")
+}
+
+model Email {
+  emailId      Int       @id @default(autoincrement()) @map("email_id")
+  orderId      String?   @map("order_id") @db.VarChar(255)
+  customerId   Int?      @map("customer_id")
+  emailAddress String?   @map("email_address") @db.VarChar(255)
+  emailTime    DateTime? @map("email_time") @db.DateTime(0)
+  type         String?   @db.VarChar(512)
+  content      String?   @db.VarChar(8192)
+  order        Order?    @relation("emailToorder", fields: [orderId], references: [orderId], onDelete: Restrict, onUpdate: Restrict, map: "email_ibfk_1")
+  customer     Customer? @relation("customerToemail", fields: [customerId], references: [customerId], onDelete: Restrict, onUpdate: Restrict, map: "email_ibfk_2")
+
+  @@index([customerId], map: "customer_id")
+  @@index([orderId], map: "order_id")
+  @@map("email")
+}
+
+model Event {
+  eventId    Int       @id @default(autoincrement()) @map("event_id")
+  type       String?   @db.VarChar(255)
+  label      String?   @db.VarChar(255)
+  datetime   DateTime? @db.DateTime(0)
+  customerId Int?      @map("customer_id")
+  meta1      String?   @map("meta_1") @db.VarChar(255)
+  meta2      String?   @map("meta_2") @db.VarChar(255)
+  meta3      String?   @default("NULL") @map("meta_3") @db.VarChar(4096)
+  meta4      String?   @map("meta_4") @db.VarChar(255)
+  meta5      String?   @map("meta_5") @db.VarChar(255)
+  metaExtra  String?   @map("meta_extra") @db.VarChar(1024)
+  customer   Customer? @relation("customerToevent", fields: [customerId], references: [customerId], onDelete: Restrict, onUpdate: Restrict, map: "event_ibfk_1")
+
+  @@index([customerId], map: "customer_id")
+  @@map("event")
+}
+
+model Order {
+  orderId            String              @id @map("order_id") @db.VarChar(255)
+  customerId         Int?                @map("customer_id")
+  status             String?             @db.VarChar(255)
+  paymentStatus      String?             @map("payment_status") @db.VarChar(255)
+  type               String?             @db.VarChar(255)
+  productName        String?             @map("product_name") @db.VarChar(512)
+  productImage       String?             @map("product_image") @db.VarChar(512)
+  quantity           String?             @db.VarChar(512)
+  location           String?             @db.VarChar(512)
+  orderTime          DateTime?           @map("order_time") @db.DateTime(0)
+  dispatchTime       DateTime?           @map("dispatch_time") @db.DateTime(0)
+  length             String?             @db.VarChar(255)
+  expiry             DateTime?           @db.DateTime(0)
+  couponName         String?             @map("coupon_name") @db.VarChar(255)
+  total              String?             @db.VarChar(255)
+  paymentId          String?             @map("payment_id") @db.VarChar(255)
+  note               String?             @db.VarChar(512)
+  ecomOrderId        String?             @map("ecom_order_id") @db.VarChar(255)
+  lastChain          String?             @map("last_chain") @db.VarChar(255)
+  nextChain          String?             @map("next_chain") @db.VarChar(255)
+  residentialPlanId  Int?                @map("residential_plan_id")
+  secondUser         Int?                @default(0) @map("2nd_user") @db.TinyInt
+  commercialAccounts CommercialAccount[] @relation("commercial_accountToorder")
+  emails             Email[]             @relation("emailToorder")
+  customer           Customer?           @relation("customerToorder", fields: [customerId], references: [customerId], onDelete: Restrict, onUpdate: Restrict, map: "order_ibfk_1")
+  residentialPlan    ResidentialPlan?    @relation("orderToresidential_plan", fields: [residentialPlanId], references: [residentialPlanId], onDelete: Restrict, onUpdate: Restrict, map: "order_ibfk_2")
+  proxies            Proxy[]             @relation("orderToproxy")
+  customProxies      proxy2nduser[]      @relation("orderTocustomproxy")
+  coupon             Promotion?          @relation(name: "orderTopromotion", fields: [couponName], references: [discountCode])
+
+  product  Product?  @relation(name: "orderToproduct", fields: [productName], references: [productName])
+  accounts Account[] @relation("orderToaccount")
+
+  @@index([customerId], map: "customer_id")
+  @@index([residentialPlanId], map: "residential_plan_id")
+  @@map("order")
+}
+
+model PpDatabaseSnapshot {
+  databaseSnapshotId                            Int       @id @default(autoincrement()) @map("database_snapshot_id")
+  databaseSnapshotDatetime                      DateTime? @map("database_snapshot_datetime") @db.DateTime(0)
+  databaseSnapshotTotalOrder                    Int?      @map("database_snapshot_total_orders")
+  databaseSnapshotResidentialOrder              Int?      @map("database_snapshot_residential_orders")
+  databaseSnapshotIspOrder                      Int?      @map("database_snapshot_isp_orders")
+  databaseSnapshotCaptchaOrder                  Int?      @map("database_snapshot_captcha_orders")
+  databaseSnapshotCaptchaplusOrder              Int?      @map("database_snapshot_captchaplus_orders")
+  databaseSnapshotDropdayOrder                  Int?      @map("database_snapshot_dropday_orders")
+  databaseSnapshotGeneralOrder                  Int?      @map("database_snapshot_general_orders")
+  databaseSnapshotTotalRevenue                  Float?    @map("database_snapshot_total_revenue") @db.Float
+  databaseSnapshotTotalProxy                    Int?      @map("database_snapshot_total_proxies")
+  databaseSnapshotAvailableProxy                Int?      @map("database_snapshot_available_proxies")
+  databaseSnapshotCoolingProxy                  Int?      @map("database_snapshot_cooling_proxies")
+  databaseSnapshotInuseProxy                    Int?      @map("database_snapshot_inuse_proxies")
+  databaseSnapshotAwaitingexpiryProxy           Int?      @map("database_snapshot_awaitingexpiry_proxies")
+  databaseSnapshotTotalResidentialAccount       Int?      @map("database_snapshot_total_residential_accounts")
+  databaseSnapshotTotalResidentialActiveAccount Int?      @map("database_snapshot_total_residential_active_accounts")
+  databaseSnapshotTotalResidentialDataLiability Float?    @map("database_snapshot_total_residential_data_liability") @db.Float
+  databaseSnapshotTotalAccount                  Int?      @map("database_snapshot_total_accounts")
+
+  @@map("pp_database_snapshot")
+}
+
+model PpGroup {
+  groupId             Int                @id @default(autoincrement()) @map("group_id")
+  groupStatus         String?            @map("group_status") @db.VarChar(255)
+  groupName           String?            @map("group_name") @db.VarChar(255)
+  groupType           String?            @map("group_type") @db.VarChar(255)
+  groupDatetime       DateTime?          @map("group_datetime") @db.DateTime(0)
+  groupSize           Int?               @map("group_size")
+  groupWebhook        String?            @map("group_webhook") @db.VarChar(255)
+  groupSourceId       Int?               @map("group_source_id")
+  groupAffiliate      Int?               @map("group_affiliate")
+  groupCoupon         String?            @map("group_coupon") @db.VarChar(255)
+  groupCouponDiscount String?            @map("group_coupon_discount") @db.VarChar(255)
+  customer            Customer?          @relation("customerTopp_group", fields: [groupSourceId], references: [customerId], onDelete: Restrict, onUpdate: Restrict, map: "pp_group_ibfk_1")
+  ppWebhookAttempts   PpWebhookAttempt[] @relation("pp_groupTopp_webhook_attempt")
+
+  @@index([groupSourceId], map: "group_source_id")
+  @@map("pp_group")
+}
+
+model PpLink {
+  linkId               Int               @id @default(autoincrement()) @map("link_id")
+  linkDatetime         DateTime?         @map("link_datetime") @db.DateTime(0)
+  linkStatus           String?           @map("link_status") @db.VarChar(255)
+  linkType             String?           @map("link_type") @db.VarChar(255)
+  linkLabel            String?           @map("link_label") @db.VarChar(255)
+  linkUrl              String?           @map("link_url") @db.VarChar(255)
+  linkClick            Int?              @map("link_clicks")
+  linkAffiliate        String?           @map("link_affiliate") @db.VarChar(255)
+  linkWebhookAttemptId Int?              @map("link_webhook_attempt_id")
+  ppWebhookAttempt     PpWebhookAttempt? @relation("pp_linkTopp_webhook_attempt", fields: [linkWebhookAttemptId], references: [webhookAttemptId], onUpdate: Restrict, map: "pp_link_ibfk_1")
+
+  @@index([linkWebhookAttemptId], map: "link_webhook_attempt_id")
+  @@map("pp_link")
+}
+
+model PpPost {
+  postId            Int                @id @default(autoincrement()) @map("post_id")
+  postDatetime      DateTime?          @map("post_datetime") @db.DateTime(0)
+  postTitle         String?            @map("post_title") @db.VarChar(255)
+  postContent       String?            @map("post_content") @db.VarChar(2048)
+  postMeta1         String?            @map("post_meta_1") @db.VarChar(255)
+  postMeta1Content  String?            @map("post_meta_1_content") @db.VarChar(255)
+  postMeta2         String?            @map("post_meta_2") @db.VarChar(255)
+  postMeta2Content  String?            @map("post_meta_2_content") @db.VarChar(255)
+  postUrlLabel      String?            @map("post_url_label") @db.VarChar(255)
+  postCreatorId     Int?               @map("post_creator_id")
+  customer          Customer?          @relation("customerTopp_post", fields: [postCreatorId], references: [customerId], onDelete: Restrict, onUpdate: Restrict, map: "pp_post_ibfk_1")
+  ppWebhookAttempts PpWebhookAttempt[] @relation("pp_postTopp_webhook_attempt")
+
+  @@index([postCreatorId], map: "post_creator_id")
+  @@map("pp_post")
+}
+
+model PpWebhookAttempt {
+  webhookAttemptId       Int       @id @default(autoincrement()) @map("webhook_attempt_id")
+  webhookAttemptDatetime DateTime? @map("webhook_attempt_datetime") @db.DateTime(0)
+  webhookAttemptPostId   Int?      @map("webhook_attempt_post_id")
+  webhookAttemptStatus   String?   @map("webhook_attempt_status") @db.VarChar(255)
+  webhookAttemptGroupId  Int?      @map("webhook_attempt_group_id")
+  webhookAttemptClick    Int?      @map("webhook_attempt_clicks")
+  webhookAttemptWebhook  String?   @map("webhook_attempt_webhook") @db.VarChar(255)
+  ppLinks                PpLink[]  @relation("pp_linkTopp_webhook_attempt")
+  ppPost                 PpPost?   @relation("pp_postTopp_webhook_attempt", fields: [webhookAttemptPostId], references: [postId], onUpdate: Restrict, map: "pp_webhook_attempt_ibfk_1")
+  ppGroup                PpGroup?  @relation("pp_groupTopp_webhook_attempt", fields: [webhookAttemptGroupId], references: [groupId], onUpdate: Restrict, map: "pp_webhook_attempt_ibfk_2")
+
+  @@index([webhookAttemptGroupId], map: "webhook_attempt_group_id")
+  @@index([webhookAttemptPostId], map: "webhook_attempt_post_id")
+  @@map("pp_webhook_attempt")
+}
+
+model Promotion {
+  active          Int?      @default(0) @db.TinyInt
+  start           DateTime? @db.DateTime(0)
+  expiry          DateTime? @db.DateTime(0)
+  appliesTo       String?   @default("NULL") @map("applies_to") @db.VarChar(4096)
+  maxUses         Int?      @default(0) @map("max_uses")
+  use             Int?      @default(0) @map("uses")
+  discountCode    String    @id @unique(map: "discount_code_UNIQUE") @map("discount_code") @db.VarChar(255)
+  discount        Float?    @default(0)
+  minimumQuantity Int?      @default(0) @map("minimum_quantity")
+  vip             Int       @default(0) @db.TinyInt
+  site            String?   @default("porter") @db.VarChar(255)
+  newOrders       Int?      @default(0) @map("new_orders") @db.TinyInt
+  oneTime         Int?      @default(0) @map("one_time") @db.TinyInt
+  oneTimeCoupon   String?   @map("one_time_coupon") @db.VarChar(255)
+  maximumQuantity Int?      @default(0) @map("maximum_quantity")
+  couponOrders    Order[]   @relation("orderTopromotion")
+  createdAt       DateTime  @default(now())
+
+  @@map("promotion")
+}
+
+model Proxy {
+  proxyId            Int                 @id @default(autoincrement()) @map("proxy_id")
+  status             String?             @db.VarChar(255)
+  type               String?             @db.VarChar(255)
+  local              String?             @db.VarChar(255)
+  currentStart       DateTime?           @map("current_start") @db.DateTime(0)
+  currentEnd         DateTime?           @map("current_end") @db.DateTime(0)
+  ipAddress          String?             @map("ip_address") @db.VarChar(255)
+  port               String?             @db.VarChar(255)
+  username           String?             @db.VarChar(255)
+  password           String?             @db.VarChar(255)
+  assignedOrderId    String?             @map("assigned_order_id") @db.VarChar(255)
+  note               String?             @db.VarChar(512)
+  sortId             Int?                @map("sort_id")
+  lastChange         DateTime?           @map("last_change") @db.DateTime(0)
+  subnet             String?             @db.VarChar(20)
+  commercialAccounts CommercialAccount[] @relation("commercial_accountToproxy")
+  order              Order?              @relation("orderToproxy", fields: [assignedOrderId], references: [orderId], onDelete: Restrict, onUpdate: Restrict, map: "proxy_ibfk_1")
+
+  @@unique([ipAddress, username], map: "ip_user")
+  @@index([assignedOrderId], map: "assigned_order_id")
+  @@map("proxy")
+}
+
+model ResidentialOption {
+  residentialOptionId             Int                              @id @default(autoincrement()) @map("residential_option_id")
+  type                            String?                          @db.VarChar(255)
+  name                            String?                          @db.VarChar(255)
+  status                          String?                          @db.VarChar(255)
+  regDate                         DateTime?                        @map("reg_date") @db.DateTime(0)
+  popular                         Boolean?
+  residentialOptionConfigurations ResidentialOptionConfiguration[] @relation("residential_optionToresidential_option_configuration")
+
+  @@map("residential_option")
+}
+
+model ResidentialOptionConfiguration {
+  residentialOptionConfigurationId Int                @id @default(autoincrement()) @map("residential_option_configuration_id")
+  residentialOptionId              Int?               @map("residential_option_id")
+  service                          String?            @db.VarChar(255)
+  type                             String?            @db.VarChar(255)
+  name                             String?            @db.VarChar(255)
+  country                          String?            @db.VarChar(255)
+  state                            String?            @db.VarChar(255)
+  city                             String?            @db.VarChar(255)
+  asn                              String?            @db.VarChar(255)
+  status                           String?            @db.VarChar(255)
+  regDate                          DateTime?          @map("reg_date") @db.DateTime(0)
+  weight                           Int?
+  domain                           String?            @db.VarChar(255)
+  residentialOption                ResidentialOption? @relation("residential_optionToresidential_option_configuration", fields: [residentialOptionId], references: [residentialOptionId], onDelete: Restrict, onUpdate: Restrict, map: "residential_option_configuration_ibfk_1")
+
+  @@index([residentialOptionId], map: "residential_option_id")
+  @@map("residential_option_configuration")
+}
+
+model ResidentialPlan {
+  residentialPlanId  Int       @id @default(autoincrement()) @map("residential_plan_id")
+  customerId         Int?      @map("customer_id")
+  network_account_id String?   @default("randomtext") @db.VarChar(45)
+  network_user_id    String?   @default("randomtext") @db.VarChar(45)
+  type               String?   @db.VarChar(255)
+  status             String?   @db.VarChar(255)
+  username           String?   @db.VarChar(255)
+  password           String?   @db.VarChar(255)
+  regDate            DateTime? @map("reg_date") @db.DateTime(0)
+  expiry             DateTime? @db.DateTime(0)
+  activeBandwidth    Float?    @map("active_bandwidth") @db.Float
+  usage              Float?    @db.Float
+  lastChange         DateTime? @map("last_change") @db.DateTime(0)
+  orders             Order[]   @relation("orderToresidential_plan")
+  customer           Customer? @relation("customerToresidential_plan", fields: [customerId], references: [customerId], onDelete: Restrict, onUpdate: Restrict, map: "residential_plan_ibfk_1")
+
+  @@index([customerId], map: "customer_id")
+  @@map("residential_plan")
+}
+
+model ProductPage {
+  productPageId          String   @id @map("product_page_id") @db.VarChar(255)
+  productName            String   @map("product_name") @db.VarChar(255)
+  productPageTitle       String   @map("product_page_title") @db.VarChar(255)
+  productPageDispatch    DateTime @map("product_page_dispatch") @db.DateTime(0)
+  productPageDescription String   @map("product_page_description") @db.VarChar(4096)
+  product                Product? @relation(name: "pageToProduct", fields: [productName], references: [productName])
+
+  @@map("product_page")
+}
+
+model Product {
+  productStock         Int     @map("product_stock")
+  productName          String  @id @map("product_name") @db.VarChar(255)
+  productActive        Int     @map("product_active") @db.TinyInt
+  productPricing       String  @map("product_pricing") @db.VarChar(4096)
+  productRecurring     Int     @map("product_recurring") @db.TinyInt
+  productPool          String  @map("product_pool") @db.VarChar(255)
+  productExtendable    Int     @map("product_extendable") @db.TinyInt
+  productResi          Int     @default(0) @map("product_resi") @db.TinyInt
+  productVip           Int     @default(0) @map("product_vip") @db.TinyInt
+  productDispatchTime  String? @map("product_dispatch_time") @db.VarChar(255)
+  productHomepage      Int     @default(0) @map("product_homepage") @db.TinyInt
+  productTitle         String  @default("Default Title") @map("product_title") @db.VarChar(4096)
+  productDescription   String  @default("Default Description") @map("product_description") @db.VarChar(4096)
+  productEliteDiscount Int     @default(0) @map("product_elite_discount")
+  productServer        Int     @default(0) @map("product_server") @db.TinyInt
+  productAccount       Int     @default(0) @map("product_account") @db.TinyInt
+  productSite          String? @default("porter") @map("product_site") @db.VarChar(255)
+  productFilter        String? @default("") @map("product_filter") @db.VarChar(255)
+
+  productPreorder Int?          @default(0) @map("product_preorder") @db.TinyInt
+  productOrders   Order[]       @relation("orderToproduct")
+  productPages    ProductPage[] @relation(name: "pageToProduct")
+
+  @@map("product")
+}
+
+model Server {
+  serverId        Int       @id @unique(map: "server_id_UNIQUE") @default(autoincrement()) @map("server_id")
+  status          String?   @db.VarChar(45)
+  typeId          String?   @map("type_id") @db.VarChar(45)
+  type            String?   @db.VarChar(45)
+  serviceId       String?   @map("service_id") @db.VarChar(45)
+  ipAddress       String?   @map("ip_address") @db.VarChar(45)
+  hostname        String?   @db.VarChar(45)
+  username        String?   @db.VarChar(45)
+  password        String?   @db.VarChar(45)
+  billingCycle    String?   @map("billing_cycle") @db.VarChar(45)
+  assignedOrderId String?   @map("assigned_order_id") @db.VarChar(45)
+  currentStart    DateTime? @map("current_start") @db.DateTime(0)
+  currentEnd      DateTime? @map("current_end") @db.DateTime(0)
+  invoiceId       String?   @map("invoice_id") @db.VarChar(45)
+  orderId         String?   @map("order_id") @db.VarChar(45)
+
+  @@map("server")
+}
+
+model Account {
+  accountId       Int     @id @unique(map: "account_id_UNIQUE") @default(autoincrement()) @map("account_id")
+  status          String? @db.VarChar(45)
+  type            String? @db.VarChar(45)
+  location        String? @db.VarChar(45)
+  master          String? @db.VarChar(45)
+  mpassword       String? @db.VarChar(45)
+  username        String? @db.VarChar(45)
+  upassword       String? @db.VarChar(45)
+  email           String? @db.VarChar(45)
+  epassword       String? @db.VarChar(45)
+  recoveryEmail   String? @map("recovery_email") @db.VarChar(45)
+  ipAddress       String? @map("ip_address") @db.VarChar(45)
+  assignedOrderId String? @map("assigned_order_id") @db.VarChar(255)
+  imported        String? @db.VarChar(45)
+  firstName       String? @map("first_name") @db.VarChar(45)
+  lastName        String? @map("last_name") @db.VarChar(45)
+  phone           String? @map("phone") @db.VarChar(45)
+  replacement     Int?
+
+  order Order? @relation("orderToaccount", fields: [assignedOrderId], references: [orderId])
+
+  @@map("account")
+}
+
+model checkoutSession {
+  id        String   @id @db.VarChar(255)
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamp(0)
+  status    String   @db.VarChar(255)
+
+  @@map("checkout_session")
+}
+
+model point {
+  pointId    Int    @id @default(autoincrement()) @map("point_id")
+  customerId Int?   @unique(map: "customer_id_UNIQUE") @map("customer_id")
+  balance    Float? @default(0) @db.Float
+}
+
+model elite {
+  eliteId     Int      @id @default(autoincrement()) @map("elite_id") @db.UnsignedInt
+  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamp(0)
+  status      String?  @map("status") @db.VarChar(255)
+  type        String?  @map("type") @db.VarChar(255)
+  country     String?  @map("country") @db.VarChar(255)
+  manager     Int?     @map("manager")
+  discordId   String?  @map("discord_id") @db.VarChar(255)
+  discordName String?  @map("discord_name") @db.VarChar(255)
+  email       String?  @map("email") @db.VarChar(255)
+  notes       String?  @map("notes") @db.VarChar(1024)
+
+  @@map("elite")
+}
+
+model webhook {
+  webhookId Int      @id @default(autoincrement()) @map("webhook_id") @db.UnsignedInt
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamp(0)
+  country   String?  @map("country") @db.VarChar(255)
+  regions   String?  @map("regions") @db.VarChar(255)
+  manager   Int?     @map("manager")
+  name      String?  @map("name") @db.VarChar(255)
+  webhook   String?  @map("webhook") @db.VarChar(1024)
+  coupon    String?  @map("coupon") @db.VarChar(255)
+  contact   String?  @map("contact") @db.VarChar(255)
+  hype      Int?     @map("hype")
+  status    String?  @map("status") @db.VarChar(255)
+  clicks    Int?     @default(0) @map("clicks")
+
+  @@map("webhook")
+}
+
+model successPost {
+  successId  Int     @id @unique(map: "success_id_UNIQUE") @default(autoincrement()) @map("success_id")
+  period     String? @db.VarChar(4)
+  customerId String? @map("customer_id") @db.VarChar(11)
+  messageId  String? @map("message_id") @db.VarChar(50)
+
+  @@map("success_post")
+}
+
+model giveaway_entry {
+  giveaway_entry_id Int     @id @default(autoincrement())
+  customer_id       String  @db.VarChar(11)
+  giveaway_id       Int
+  winner            Int?    @db.TinyInt
+  message_id        String? @db.VarChar(50)
+}
+
+model ip_monitor {
+  ip_monitor_id Int     @id @default(autoincrement())
+  country       String? @db.VarChar(45)
+  max_price     String? @db.VarChar(45)
+}
+
+model ip_monitor_ranges {
+  ip_monitor_ranges_id Int     @id @default(autoincrement())
+  range                String? @db.VarChar(45)
+  price                String? @db.VarChar(45)
+  maxmind              String? @db.VarChar(45)
+  fastly               String? @db.VarChar(45)
+  akamai               String? @db.VarChar(45)
+  sent                 Int?    @db.TinyInt
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model point_ban {
+  point_ban_id Int     @id @unique(map: "point_ban_id_UNIQUE") @default(autoincrement())
+  discord_id   String? @db.VarChar(25)
+}
+
+model point_conf {
+  point_conf_id Int       @id @default(autoincrement())
+  start         DateTime? @db.DateTime(0)
+  end           DateTime? @db.DateTime(0)
+  duration      String?   @db.VarChar(4)
+  point_action  String?   @db.VarChar(100)
+  message_id    String?   @db.VarChar(30)
+}
+
+model point_pending {
+  point_pending_id Int       @unique(map: "point_pending_id_UNIQUE") @default(autoincrement())
+  date_earned      DateTime? @db.DateTime(0)
+  status           String?   @default("PENDING") @db.VarChar(45)
+  customer_id      String?   @db.VarChar(20)
+  amount           Float?    @db.Float
+  message_url      String?   @db.VarChar(150)
+}
+
+model proxy2nduser {
+  proxyId         Int       @id @default(autoincrement()) @map("proxy_id")
+  status          String?   @db.VarChar(255)
+  type            String?   @db.VarChar(255)
+  local           String?   @db.VarChar(255)
+  currentStart    DateTime? @map("current_start") @db.DateTime(0)
+  currentEnd      DateTime? @map("current_end") @db.DateTime(0)
+  ipAddress       String?   @map("ip_address") @db.VarChar(255)
+  port            String?   @db.VarChar(255)
+  username        String?   @db.VarChar(255)
+  password        String?   @db.VarChar(255)
+  assignedOrderId String?   @map("assigned_order_id") @db.VarChar(255)
+  note            String?   @db.VarChar(512)
+  sortId          Int?      @map("sort_id")
+  lastChange      DateTime? @map("last_change") @db.DateTime(0)
+  subnet          String?   @db.VarChar(20)
+  Order           Order?    @relation(name: "orderTocustomproxy", fields: [assignedOrderId], references: [orderId])
+
+  @@unique([ipAddress, username], map: "ip_user")
+  @@index([assignedOrderId], map: "assigned_order_id")
+}
+
+model Guide {
+  guideSlug        String   @id @map("guide_slug") @db.VarChar(255)
+  guideTitle       String   @map("guide_title") @db.VarChar(255)
+  guideDescription String   @map("guide_description") @db.VarChar(255)
+  guideFilters     String?  @map("guide_filters") @db.VarChar(4096)
+  guideIcon        String   @map("guide_icon") @db.VarChar(4096)
+  guideContent     String   @map("guide_content") @db.MediumText
+  createdAt        DateTime @default(now()) @map("created_at") @db.Timestamp(0)
+  guideSite        String?  @default("") @map("guide_site") @db.VarChar(255)
+
+  @@map("guide")
+}
+
+model FAQ {
+  faqId      Int      @id @default(autoincrement()) @map("faq_id") @db.UnsignedInt
+  faqTitle   String   @map("faq_title") @db.VarChar(255)
+  faqContent String   @map("faq_content") @db.MediumText
+  createdAt  DateTime @default(now()) @map("created_at") @db.Timestamp(0)
+  faqSite    String?  @default("") @map("faq_site") @db.VarChar(255)
+  faqOrder   Int?     @default(0) @map("faq_order") @db.UnsignedInt
+
+  @@map("faq")
+}
