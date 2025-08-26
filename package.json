@@ -2,10 +2,10 @@
   "name": "porterproxies",
   "version": "0.1.0",
   "private": true,
-  "packageManager": "yarn@1.22.22",
   "scripts": {
     "dev": "next dev",
-    "build": "prisma generate && next build",
+    "postinstall": "prisma generate",
+    "build": "next build",
     "start": "next start",
     "lint": "next lint",
     "prisma:pull:dev": "dotenv -e .env.development.local -- yarn prisma db pull",
